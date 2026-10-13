@@ -1,115 +1,213 @@
-# web-programming-2026-template
+# CookBook
 
-A reusable Django project with no bundled application, SQLite, and Django's
-standard admin, authentication, sessions, messages, and staticfiles support.
+## Опис сайта
 
-## Local setup
+**CookBook** - це платформа для пошуку рецептів та планування меню на тиждень.
+Сайт буде мати каталог рецептів з можливістю пошуку за назвою страви. Також можна буде фільтрувати пошук за категоріями (наприклад, сніданок або італійська кухня). Також буде можливість сортувати за часом приготування і каклорійністю.
+Можна буде окремо переглядати всі страви з кожної категорії чи всі страви з конкретним продуктом.
 
-Requires the latest patch release of Python 3.12, 3.13, or 3.14. Run these commands from the project directory containing
-`manage.py`.
+**Меню** - зареєстровані користувачі зможуть додавати собі в меню рецепти і після збереження меню рецепти будуть формуватись у план харчування, який буде відображатись в історії профілю.
 
-1. Create and activate a virtual environment:
+## Опис ендпоінтів
+### Рецепти
+   **`GET /recipes/`**
+   *   **Опис:** отримання всіх рецептів
+   *   **Параметри:** ?category=1, ?ingredient=5, ?max_time=30
+   *   **Статус:** 200 OK
+   *   **Response body:** 
+        ```json
+         {
+          "id": 1,
+          "title": "Борщ",
+          "time_minutes": 90,
+          "calories": 400,
+          "category_id": 1
+         }
+         ```
 
-   ```bash
-   python -m venv .venv
-   
-   # for linux/macos
-   source .venv/bin/activate
-   # for Windows:
-   .venv\Scripts\activate
+   **`GET /recipes/{id}/`**
+   *   **Опис:** перегляд рецепта
+   *   **Статус:** 200 OK
+   *   **Response body:** 
+        ```json
+            {
+             "id": 2,
+              "title": "Паста Карбонара",
+              "description": "Класична італійська паста з гуанчіале та яйцем.",
+              "time_minutes": 25,
+              "calories": 400,
+              "category_id": 2,
+              "ingredients": [
+                {"id": 12, "name": "Спагетті", "amount": "200г"},
+                {"id": 15, "name": "Гуанчіале", "amount": "100г"}
+               ]
+               }
+        ```
+
+   **`POST /recipes/`**
+   *   **Опис:** створення нового рецепта
+   *   **Статус:** 201 Created
+   *   **Request body:** 
+        ```json
+         {
+          "title": "Млинці з сиром",
+           "description": "Тонкі млинці з солодкою сирною начинкою.",
+           "time_minutes": 40,
+           "calories": 250,
+           "category_id": 4
+         }
+         ```
+   *   **Response body:** 
+        ```json
+         {
+         "id": 105,
+           "title": "Млинці з сиром",
+           "description": "Тонкі млинці з солодкою сирною начинкою.",
+           "time_minutes": 40,
+           "calories": 250,
+           "category_id": 4
+         }
+         ```  
+
+   **`PUT /recipes/{id}/`**
+   *   **Опис:** оновлення рецепта
+   *   **Статус:** 200 OK
+   *   **Request body:** 
+       ```json
+         {
+          "title": "Млинці з сиром",
+           "description": "Тонкі млинці з солодкою сирною начинкою та родзинками.",
+           "time_minutes": 45,
+           "calories": 280,
+           "category_id": 4
+         }
+         ```
+   *   **Response body:**
+         ```json
+         {
+          "id": 105,
+           "title": "Млинці з сиром та родзинками",
+           "description": "Тонкі млинці з солодкою сирною начинкою та родзинками.",
+           "time_minutes": 45,
+           "calories": 280,
+           "category_id": 4
+          }
+          ```
+
+   **`DELETE /recipes/{id}/`**
+   *   **Опис:** Видалення рецепта
+   *   **Статус:** 204 No Content
+
+### Категорії
+*Ендпоінти для інгредієнтів матимуть таку ж структуру
+
+   **`GET /categories/`**
+   *   **Опис:** список страв або кухонь
+   *   **Параметри:** ?search=укр
+   *   **Статус:** 200 OK
+   *   **Response body:** 
+        ```json
+         {
+          [
+           { "id": 1, "name": "Українська кухня" },
+           { "id": 2, "name": "Італійська кухня" },
+           { "id": 3, "name": "Десерти" }
+           ]
+         }
+        ```
+   **`GET /categories/{id}/`**
+      *   **Опис:** отримання всіх рецептів з категорії
+      *   **Статус:** 200 OK
+      *   **Response body:** 
+   ```json
+            {
+              "id": 2,
+              "name": "Італійська кухня",
+              "recipes": [
+                { "id": 2, "title": "Паста Карбонара" },
+                { "id": 8, "title": "Піца Маргарита" }
+              ]
+            }
    ```
 
-2. Install dependencies:
+### Кошик
 
-   ```bash
-   python -m pip install -r requirements-dev.txt
-   ```
+   **`GET /cart/`**
+   *   **Опис:** перегляд вибраних страв
+   *   **Статус:** 200 OK
+   *   **Response body:** 
+        ```json
+         {
+          "id": 10,
+          "recipe_id": 2,
+          "recipe_title": "Паста Карбонара",
+          "quantity": 2
+        }
+         ```
+
+   **`POST /cart/`**
+   *   **Опис:** додавання рецепта в кошик
+   *   **Статус:** 201 Created
+   *   **Request body:** 
+        ```json
+         {
+          "recipe_id": 8,
+           "quantity": 1
+        }
+         ```
+   *   **Response body:** 
+        ```json
+         {
+          "id": 11,
+           "recipe_id": 8,
+           "quantity": 1
+        }
+         ```
+
+   **`DELETE /cart/{id}/`**
+   *   **Опис:** видалення з кошика
+   *   **Статус:** 204 No Content
+
+### Замовлення
+   **`POST /ordres/`**
+   *    **Опис:** зберігання поточного кошика
+   *    **Статус:** 201 Created
+   *    **Response body:**
+        ```json
+         {
+          "order_id": 1024,
+           "status": "created",
+           "total_items": 3,
+           "created_at": "2026-10-13T15:30:00Z"
+        }
+         ```
+
+   **`GET /ordres/`**
+   *    **Опис:** перегляд плану харчування
+   *    **Статус:** 200 OK
+   *    **Response body:**
+        ```json
+         {
+           "order_id": 1024,
+           "total_items": 3,
+           "created_at": "2026-10-13T15:30:00Z",
+           "items": [
+               {"recipe_title": "Паста Карбонара", "quantity": 2},
+               {"recipe_title": "Піца Маргарита", "quantity": 1}
+              ]
+           }
+         ```
+
+### Авторизація
+*TODO: розібратись як буде реалізовуватись авторизація
+
+## База даних
+<img width="955" height="461" alt="Screenshot 2026-10-12 201530" src="https://github.com/user-attachments/assets/c118c064-abf4-4dcf-871e-36a9bb02e524" />
 
 
-3. Apply migrations to create the local SQLite database:
-
-   ```bash
-   python manage.py migrate
-   ```
-
-4. Start the development server:
-
-   ```bash
-   python manage.py runserver
-   ```
-
-## Endpoints
-
-With the server running at `http://127.0.0.1:8000`:
-
-| URL | Behavior |
-| --- | --- |
-| http://127.0.0.1:8000/ | No application homepage; may show Django's development welcome page while `DEBUG = True` |
-| http://127.0.0.1:8000/admin/ | Django admin, available after applying migrations |
-
-With `DEBUG = False`, unmatched URLs such as `/` return HTTP 404.
-
-To create an account for admin login, run this after applying migrations:
-
-```bash
-python manage.py createsuperuser
-```
-
-## Add your first application
-
-1. Create an app from the directory containing `manage.py` (replace `myapp`
-   with your application name):
-
-   ```bash
-   python manage.py startapp myapp
-   ```
-
-2. Add its generated configuration class, `myapp.apps.MyappConfig`, to
-   `INSTALLED_APPS` in `config/settings.py`.
-3. Define your views and create `myapp/urls.py` with their URL patterns.
-4. Register that URLconf in `config/urls.py` using `path()` and `include()`,
-   choosing a URL prefix for the app and retaining the admin route.
-
-See the official Django 6.1 tutorial for
-[views and URL registration](https://docs.djangoproject.com/en/6.1/intro/tutorial01/)
-and [app registration and models](https://docs.djangoproject.com/en/6.1/intro/tutorial02/).
-
-## Git attributes
-
-Git detects text files automatically and normalizes them to LF. Checkouts use
-LF on Linux and Windows, while `.bat` and `.cmd` files use CRLF. Binary files
-are auto-detected and left unchanged, helping avoid newline-only diffs.
 
 
-## Code style and submission verification
 
-All submissions are required to adhere to PEP-8, Django best practices, and standard HTML/CSS/JS formatting. A deterministic cross-platform utility is provided to help you check and format your code.
 
-### 1. Verification (Check Mode)
-Before submitting, verify that all files adhere to the required standards:
-
-```bash
-python check_submission.py
-```
-
-If all checks pass, you are ready to submit! If any checks fail, review the error output or run the auto-formatter below.
-
-### 2. Auto-Formatting
-To automatically format Python files, fix safe PEP-8 rules, format Django HTML templates, and format CSS/JS static files:
-
-```bash
-python check_submission.py --format
-```
-
-### 3. PyCharm Integration
-If you use PyCharm:
-- **One-Click Run:** In the top-right toolbar run configurations dropdown, select **"Verify Submission"** or **"Format Project"** and click the green **Play** button.
-
-## Development only
-
-The included settings use `DEBUG = True`, a development secret key, and a local
-SQLite database. The default mailer uses the console backend: email is printed
-to the process's console instead of being delivered.
-
-This configuration and Django's development server are not suitable for
-production deployment.
+        
+            
