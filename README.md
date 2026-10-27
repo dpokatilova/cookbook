@@ -1,115 +1,302 @@
-# web-programming-2026-template
+# CookBook
 
-A reusable Django project with no bundled application, SQLite, and Django's
-standard admin, authentication, sessions, messages, and staticfiles support.
+## Опис сайта
 
-## Local setup
+**CookBook** - це платформа для пошуку рецептів та планування меню на тиждень.
+Сайт буде мати каталог рецептів з можливістю пошуку за назвою страви. Також можна буде фільтрувати пошук за категоріями (наприклад, сніданок або італійська кухня). Також буде можливість сортувати за часом приготування і каклорійністю.
+Можна буде окремо переглядати всі страви з кожної категорії чи всі страви з конкретним продуктом.
 
-Requires the latest patch release of Python 3.12, 3.13, or 3.14. Run these commands from the project directory containing
-`manage.py`.
+**Меню** - зареєстровані користувачі зможуть додавати собі в меню рецепти і після збереження меню рецепти будуть формуватись у план харчування, який буде відображатись в історії профілю.
 
-1. Create and activate a virtual environment:
+Фронтенд: https://github.com/dpokatilova/cookbook-frontend
 
-   ```bash
+## Як запустити проєкт
+
+Усі команди виконуються з папки, де лежить `manage.py`.
+ 
+1. Склонуйте репозиторій
+ 
+2. Створіть і активуйте віртуальне середовище:
+```bash
    python -m venv .venv
-   
-   # for linux/macos
-   source .venv/bin/activate
-   # for Windows:
+ 
+   # Windows:
    .venv\Scripts\activate
-   ```
-
-2. Install dependencies:
-
-   ```bash
+   # Linux / macOS:
+   source .venv/bin/activate
+```
+ 
+3. Встановіть залежності:
+```bash
    python -m pip install -r requirements-dev.txt
-   ```
-
-
-3. Apply migrations to create the local SQLite database:
-
-   ```bash
+```
+ 
+4. Застосуйте міграції:
+```bash
    python manage.py migrate
-   ```
-
-4. Start the development server:
-
-   ```bash
+```
+ 
+5. Запустіть сервер:
+```bash
    python manage.py runserver
-   ```
-
-## Endpoints
-
-With the server running at `http://127.0.0.1:8000`:
-
-| URL | Behavior |
+```
+ 
+### Адреси та порти
+ 
+| Частина | Адреса |
 | --- | --- |
-| http://127.0.0.1:8000/ | No application homepage; may show Django's development welcome page while `DEBUG = True` |
-| http://127.0.0.1:8000/admin/ | Django admin, available after applying migrations |
+| Бекенд (API) | http://127.0.0.1:8000 |
+| Фронтенд | http://127.0.0.1:3000 |
 
-With `DEBUG = False`, unmatched URLs such as `/` return HTTP 404.
-
-To create an account for admin login, run this after applying migrations:
-
-```bash
-python manage.py createsuperuser
+## Опис ендпоінтів
+### Рецепти
+   **`GET /recipes/`**
+   *   **Опис:** отримання всіх рецептів
+   *   **Параметри (всі необов'язкові, можна комбінувати):**
+       *   `?search=Омлет` — пошук за назвою
+       *   `?category=1` — рецепти з категорії
+       *   `?ingredient=5` — рецепти з інгредієнтом
+       *   `?max_time=30` — час приготування не більше ніж 30 хв
+       *   `?ordering=time_minutes` — сортування; можливі значення: `time_minutes`, `-time_minutes`, `calories`, `-calories` (мінус — за спаданням)
+   *   **Статус:** 200 OK
+   *   **Помилки:** 400 — якщо `category`, `ingredient` або `max_time` не число, або невідоме значення `ordering`
+   *   **Response body:**
+```json
+        [
+          {
+            "id": 1,
+            "title": "Борщ",
+            "time_minutes": 90,
+            "calories": 400,
+            "category_id": 1
+          }
+        ]
 ```
 
-## Add your first application
+   **`GET /recipes/{id}/`**
+   *   **Опис:** перегляд рецепта разом з інгредієнтами
+   *   **Статус:** 200 OK
+   *   **Помилки:** 404 — рецепта не існує
+   *   **Response body:** 
+        ```json
+            {
+             "id": 2,
+              "title": "Паста Карбонара",
+              "description": "Класична італійська паста з гуанчіале та яйцем.",
+              "time_minutes": 25,
+              "calories": 400,
+              "category_id": 2,
+              "ingredients": [
+                {"id": 12, "name": "Спагетті", "amount": "200г"},
+                {"id": 15, "name": "Гуанчіале", "amount": "100г"}
+               ]
+               }
+        ```
 
-1. Create an app from the directory containing `manage.py` (replace `myapp`
-   with your application name):
-
-   ```bash
-   python manage.py startapp myapp
-   ```
-
-2. Add its generated configuration class, `myapp.apps.MyappConfig`, to
-   `INSTALLED_APPS` in `config/settings.py`.
-3. Define your views and create `myapp/urls.py` with their URL patterns.
-4. Register that URLconf in `config/urls.py` using `path()` and `include()`,
-   choosing a URL prefix for the app and retaining the admin route.
-
-See the official Django 6.1 tutorial for
-[views and URL registration](https://docs.djangoproject.com/en/6.1/intro/tutorial01/)
-and [app registration and models](https://docs.djangoproject.com/en/6.1/intro/tutorial02/).
-
-## Git attributes
-
-Git detects text files automatically and normalizes them to LF. Checkouts use
-LF on Linux and Windows, while `.bat` and `.cmd` files use CRLF. Binary files
-are auto-detected and left unchanged, helping avoid newline-only diffs.
-
-
-## Code style and submission verification
-
-All submissions are required to adhere to PEP-8, Django best practices, and standard HTML/CSS/JS formatting. A deterministic cross-platform utility is provided to help you check and format your code.
-
-### 1. Verification (Check Mode)
-Before submitting, verify that all files adhere to the required standards:
-
-```bash
-python check_submission.py
+   **`POST /recipes/`**
+   *   **Опис:** створення нового рецепта (інгредієнти додаються окремим запитом, див. нижче)
+   *   **Статус:** 201 Created
+   *   **Помилки:** 400 — невалідні дані або категорії з таким `category_id` не існує
+   *   **Request body:**
+```json
+        {
+          "title": "Млинці з сиром",
+          "description": "Тонкі млинці з солодкою сирною начинкою.",
+          "time_minutes": 40,
+          "calories": 250,
+          "category_id": 4
+        }
+```
+   *   **Response body:**
+```json
+        {
+          "id": 105,
+          "title": "Млинці з сиром",
+          "description": "Тонкі млинці з солодкою сирною начинкою.",
+          "time_minutes": 40,
+          "calories": 250,
+          "category_id": 4
+        }
 ```
 
-If all checks pass, you are ready to submit! If any checks fail, review the error output or run the auto-formatter below.
+   **`PUT /recipes/{id}/`**
+   *   **Опис:** оновлення рецепта
+   *   **Статус:** 200 OK
+   *   **Помилки:** 400 — невалідні дані, 404 — рецепта не існує
+   *   **Request body:** 
+       ```json
+         {
+          "title": "Млинці з сиром",
+           "description": "Тонкі млинці з солодкою сирною начинкою та родзинками.",
+           "time_minutes": 45,
+           "calories": 280,
+           "category_id": 4
+         }
+         ```
+   *   **Response body:**
+         ```json
+         {
+          "id": 105,
+           "title": "Млинці з сиром та родзинками",
+           "description": "Тонкі млинці з солодкою сирною начинкою та родзинками.",
+           "time_minutes": 45,
+           "calories": 280,
+           "category_id": 4
+          }
+          ```
 
-### 2. Auto-Formatting
-To automatically format Python files, fix safe PEP-8 rules, format Django HTML templates, and format CSS/JS static files:
+   **`DELETE /recipes/{id}/`**
+   *   **Опис:** Видалення рецепта
+   *   **Статус:** 204 No Content
+   *   **Помилки:** 404 — рецепта не існує
 
-```bash
-python check_submission.py --format
+
+### Інгредієнти рецепта
+ 
+   **`POST /recipes/{id}/ingredients/`**
+   *   **Опис:** додавання інгредієнта до рецепта
+   *   **Статус:** 201 Created
+   *   **Помилки:** 400 — невалідні дані або інгредієнта не існує, 404 — рецепта не існує, 409 — інгредієнт уже є в цьому рецепті
+   *   **Request body:**
+```json
+        {
+          "ingredient_id": 12,
+          "amount": "200 г"
+        }
 ```
+   *   **Response body:** рецепт з оновленим списком інгредієнтів (як у `GET /recipes/{id}/`)
+   **`DELETE /recipes/{id}/ingredients/{ingredient_id}/`**
+   *   **Опис:** прибрати інгредієнт з рецепта (сам інгредієнт і рецепт не видаляються)
+   *   **Статус:** 204 No Content
+   *   **Помилки:** 404 — цього інгредієнта немає в рецепті
 
-### 3. PyCharm Integration
-If you use PyCharm:
-- **One-Click Run:** In the top-right toolbar run configurations dropdown, select **"Verify Submission"** or **"Format Project"** and click the green **Play** button.
+### Категорії
+*   Ендпоінти для інгредієнтів (`/ingredients/`) мають таку ж структуру
+ 
+   **`GET /categories/`**
+   *   **Опис:** список категорій
+   *   **Параметри:** `?search=Сні` — пошук за назвою
+   *   **Статус:** 200 OK
+   *   **Response body:**
+```json
+        [
+          { "id": 1, "name": "Українська кухня" },
+          { "id": 2, "name": "Італійська кухня" },
+          { "id": 3, "name": "Десерти" }
+        ]
+```
+ 
+   **`GET /categories/{id}/`**
+   *   **Опис:** перегляд категорії. Рецепти категорії отримуються через `GET /recipes/?category={id}`
+   *   **Статус:** 200 OK
+   *   **Помилки:** 404 — категорії не існує
+   *   **Response body:**
+```json
+        { "id": 2, "name": "Італійська кухня" }
+```
+ 
+   **`POST /categories/`**
+   *   **Опис:** створення категорії
+   *   **Статус:** 201 Created
+   *   **Помилки:** 400 — порожня назва або категорія з такою назвою вже існує
+   *   **Request body:**
+```json
+        { "name": "Десерти" }
+```
+   *   **Response body:**
+```json
+        { "id": 3, "name": "Десерти" }
+```
+ 
+   **`PUT /categories/{id}/`**
+   *   **Опис:** оновлення категорії
+   *   **Статус:** 200 OK
+   *   **Помилки:** 400 — невалідні дані, 404 — категорії не існує
+   *   **Request body:**
+```json
+        { "name": "Десерти та випічка" }
+```
+   *   **Response body:**
+```json
+        { "id": 3, "name": "Десерти та випічка" }
+```
+ 
+   **`DELETE /categories/{id}/`**
+   *   **Опис:** видалення категорії
+   *   **Статус:** 204 No Content
+   *   **Помилки:** 404 — категорії не існує, 409 — у категорії є рецепти
 
-## Development only
 
-The included settings use `DEBUG = True`, a development secret key, and a local
-SQLite database. The default mailer uses the console backend: email is printed
-to the process's console instead of being delivered.
+### Кошик
 
-This configuration and Django's development server are not suitable for
-production deployment.
+   **`GET /cart/`**
+   *   **Опис:** перегляд вибраних страв
+   *   **Статус:** 200 OK
+   *   **Response body:** 
+        ```json
+         {
+          "id": 10,
+          "recipe_id": 2,
+          "recipe_title": "Паста Карбонара",
+          "quantity": 2
+        }
+         ```
+
+   **`POST /cart/`**
+   *   **Опис:** додавання рецепта в кошик
+   *   **Статус:** 201 Created
+   *   **Request body:** 
+        ```json
+         {
+          "recipe_id": 8,
+           "quantity": 1
+        }
+         ```
+   *   **Response body:** 
+        ```json
+         {
+          "id": 11,
+           "recipe_id": 8,
+           "quantity": 1
+        }
+         ```
+
+   **`DELETE /cart/{id}/`**
+   *   **Опис:** видалення з кошика
+   *   **Статус:** 204 No Content
+
+### Замовлення
+   **`POST /ordres/`**
+   *    **Опис:** зберігання поточного кошика
+   *    **Статус:** 201 Created
+   *    **Response body:**
+        ```json
+         {
+          "order_id": 1024,
+           "status": "created",
+           "total_items": 3,
+           "created_at": "2026-10-13T15:30:00Z"
+        }
+         ```
+
+   **`GET /ordres/`**
+   *    **Опис:** перегляд плану харчування
+   *    **Статус:** 200 OK
+   *    **Response body:**
+        ```json
+         {
+           "order_id": 1024,
+           "total_items": 3,
+           "created_at": "2026-10-13T15:30:00Z",
+           "items": [
+               {"recipe_title": "Паста Карбонара", "quantity": 2},
+               {"recipe_title": "Піца Маргарита", "quantity": 1}
+              ]
+           }
+         ```
+
+### Авторизація
+*TODO: розібратись як буде реалізовуватись авторизація
+
+## База даних
+<img width="955" height="461" alt="Screenshot 2026-10-12 201530" src="https://github.com/user-attachments/assets/c118c064-abf4-4dcf-871e-36a9bb02e524" />
