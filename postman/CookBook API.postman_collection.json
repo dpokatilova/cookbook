@@ -1,0 +1,1516 @@
+{
+  "info": {
+    "_postman_id": "4ba084b8-3704-4cb9-b270-d70429234d74",
+    "name": "CookBook API",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55860608",
+    "_collection_link": "https://go.postman.co/collection/55860608-4ba084b8-3704-4cb9-b270-d70429234d74?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List of categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List of categories",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/categories/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:17:21 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "65"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Сніданки\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Обіди\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create category",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Вечері\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/categories/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories/3/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update category",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Десерти\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/categories/3/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Empty name",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/categories/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Empty name",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/categories/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories",
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:22:42 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "150"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Невалідні дані. Деталі по кожному полю — у details.\",\n  \"details\": {\n    \"name\": [\n      \"This field may not be blank.\"\n    ]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Category not exist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories/1000/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "1000",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Category not exist",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/categories/1000/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories",
+                    "1000",
+                    ""
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:22:11 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PUT, DELETE, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "77"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Категорію з id=1000 не знайдено.\",\n  \"details\": {}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Del category with recipes",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Del category with recipes",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/categories/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:21:47 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PUT, DELETE, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "275"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Неможливо видалити категорію «Сніданки», бо до неї належить рецептів: 3. Спочатку видаліть ці рецепти або перенесіть їх в іншу категорію.\",\n  \"details\": {}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Del category",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories/3/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Ingredients",
+      "item": [
+        {
+          "name": "List of ingredients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ingredients/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ingredients",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List of ingredients",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/ingredients/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ingredients",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:22:58 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "193"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Яйця\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Помідори\"\n  },\n  {\n    \"id\": 3,\n    \"name\": \"Молоко\"\n  },\n  {\n    \"id\": 4,\n    \"name\": \"Картопля\"\n  },\n  {\n    \"id\": 5,\n    \"name\": \"Цибуля\"\n  },\n  {\n    \"id\": 6,\n    \"name\": \"Борошно\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create ingredient",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Цукор\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/ingredients/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ingredients",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get ingredient",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ingredients/7/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ingredients",
+                "7",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update ingredient",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Тростинний цукор\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/ingredients/7/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ingredients",
+                "7",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Empty name",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/ingredients/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ingredients",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Empty name",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/ingredients/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ingredients",
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:23:19 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "150"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Невалідні дані. Деталі по кожному полю — у details.\",\n  \"details\": {\n    \"name\": [\n      \"This field may not be blank.\"\n    ]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Ingredient not exsit",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ingredients/1000/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ingredients",
+                "1000",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Del ingredient in recipe",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ingredients/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ingredients",
+                "1",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Del ingredient in recipe",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/ingredients/1/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "ingredients",
+                    "1",
+                    ""
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:23:35 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PUT, DELETE, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "237"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Неможливо видалити інгредієнт «Яйця», бо він використовується в рецептах: 2. Спочатку приберіть його з цих рецептів.\",\n  \"details\": {}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Del ingredient without recipe",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ingredients/7/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ingredients",
+                "7",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Recipes",
+      "item": [
+        {
+          "name": "List of recipes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "List of recipes",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/recipes/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "recipes",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:24:54 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, POST, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "347"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"title\": \"Омлет з помідорами\",\n    \"time_minutes\": 15,\n    \"calories\": 200,\n    \"category_id\": 1\n  },\n  {\n    \"id\": 2,\n    \"title\": \"Деруни\",\n    \"time_minutes\": 30,\n    \"calories\": 450,\n    \"category_id\": 2\n  },\n  {\n    \"id\": 5,\n    \"title\": \"Млинці\",\n    \"time_minutes\": 40,\n    \"calories\": 250,\n    \"category_id\": 1\n  },\n  {\n    \"id\": 7,\n    \"title\": \"Млинці\",\n    \"time_minutes\": 40,\n    \"calories\": 250,\n    \"category_id\": 1\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Create recipe",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Млинці\",\r\n    \"description\": \"Тонкі млинці\",\r\n    \"time_minutes\": 40,\r\n    \"calories\": 250,\r\n    \"category_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/recipes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get recipe",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/2/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "2",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get recipe",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/recipes/2/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "recipes",
+                    "2",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:24:01 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PUT, DELETE, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "377"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"title\": \"Деруни\",\n  \"description\": \"Прості і смачні деруни як у бабусі\",\n  \"time_minutes\": 30,\n  \"calories\": 450,\n  \"category_id\": 2,\n  \"ingredients\": [\n    {\n      \"id\": 4,\n      \"name\": \"Картопля\",\n      \"amount\": \"500г\"\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Цибуля\",\n      \"amount\": \"1 шт\"\n    },\n    {\n      \"id\": 1,\n      \"name\": \"Яйця\",\n      \"amount\": \"1 шт\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Борошно\",\n      \"amount\": \"2 ст. л.\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update recipe",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"Млинці\",\r\n    \"description\": \"Тонкі млинці\",\r\n    \"time_minutes\": 40,\r\n    \"calories\": 300,\r\n    \"category_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/recipes/6/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "6",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recipe without ingredients",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/6/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "6",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recipe with unreal category",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/?category_id=1000&max_time=5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "category_id",
+                  "value": "1000"
+                },
+                {
+                  "key": "max_time",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Recipe not exist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/1000/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "1000",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Recipe not exist",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/recipes/1000/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "recipes",
+                    "1000",
+                    ""
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:25:04 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "GET, PUT, DELETE, HEAD, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "71"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Рецепт з id=1000 не знайдено.\",\n  \"details\": {}\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Recipe ingredients",
+      "item": [
+        {
+          "name": "Create recipe ingredient",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"ingredient_id\": 3,\r\n    \"amount\": \"200 г\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/recipes/7/ingredients/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "7",
+                "ingredients",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create recipe ingredient",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ingredient_id\": 3,\r\n    \"amount\": \"200 г\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/recipes/7/ingredients/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "recipes",
+                    "7",
+                    "ingredients",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:09:36 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "185"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 7,\n  \"title\": \"Млинці\",\n  \"description\": \"Тонкі млинці\",\n  \"time_minutes\": 40,\n  \"calories\": 250,\n  \"category_id\": 1,\n  \"ingredients\": [\n    {\n      \"id\": 3,\n      \"name\": \"Молоко\",\n      \"amount\": \"200 г\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Add the same ingredient",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"ingredient_id\": 3,\r\n    \"amount\": \"200 г\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/recipes/7/ingredients/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "7",
+                "ingredients",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Add the same ingredient",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"ingredient_id\": 3,\r\n    \"amount\": \"200 г\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/recipes/7/ingredients/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "recipes",
+                    "7",
+                    "ingredients",
+                    ""
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:10:26 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "POST, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "206"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"error\": \"Інгредієнт «Молоко» уже є в рецепті «Млинці». Щоб змінити кількість, видаліть його і додайте знову.\",\n  \"details\": {}\n}"
+            }
+          ]
+        },
+        {
+          "name": "Del conection",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/recipes/7/ingredients/3/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "recipes",
+                "7",
+                "ingredients",
+                "3",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Del conection",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/recipes/7/ingredients/3/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "recipes",
+                    "7",
+                    "ingredients",
+                    "3",
+                    ""
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Tue, 27 Oct 2026 17:14:37 GMT"
+                },
+                {
+                  "key": "Server",
+                  "value": "WSGIServer/0.2 CPython/3.12.10"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Accept, Cookie, origin"
+                },
+                {
+                  "key": "Allow",
+                  "value": "DELETE, OPTIONS"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "0"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "same-origin"
+                },
+                {
+                  "key": "Cross-Origin-Opener-Policy",
+                  "value": "same-origin"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
