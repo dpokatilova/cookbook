@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,9 +38,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "corsheaders",
+    "recipes.apps.RecipesConfig",
+    "users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -47,6 +53,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -124,4 +135,15 @@ MAILERS = {
     "default": {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
