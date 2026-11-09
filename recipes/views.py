@@ -1,8 +1,10 @@
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from recipes.models import Category, Ingredient, Recipe, RecipeIngredient
+from recipes.permissions import IsAdminOrReadOnly
 from recipes.serializers import (
     CategorySerializer,
     IngredientSerializer,
@@ -37,6 +39,8 @@ def get_or_none(model, pk):
 
 
 class CategoryListView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+
     def get(self, request):
         categories = Category.objects.all()
         search = request.query_params.get("search")
@@ -54,6 +58,8 @@ class CategoryListView(APIView):
 
 
 class CategoryDetailView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+
     def get(self, request, pk):
         category = get_or_none(Category, pk)
         if category is None:
@@ -87,6 +93,8 @@ class CategoryDetailView(APIView):
 
 
 class IngredientListView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+
     def get(self, request):
         ingredients = Ingredient.objects.all()
         search = request.query_params.get("search")
@@ -104,6 +112,8 @@ class IngredientListView(APIView):
 
 
 class IngredientDetailView(APIView):
+    permission_classes = [IsAdminOrReadOnly]
+
     def get(self, request, pk):
         ingredient = get_or_none(Ingredient, pk)
         if ingredient is None:
@@ -140,6 +150,8 @@ RECIPE_ORDERING = ["time_minutes", "-time_minutes", "calories", "-calories"]
 
 
 class RecipeListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         recipes = Recipe.objects.all()
         params = request.query_params
@@ -184,6 +196,8 @@ class RecipeListView(APIView):
 
 
 class RecipeDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request, pk):
         recipe = get_or_none(Recipe, pk)
         if recipe is None:
@@ -209,6 +223,8 @@ class RecipeDetailView(APIView):
 
 
 class RecipeIngredientListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def post(self, request, pk):
         recipe = get_or_none(Recipe, pk)
         if recipe is None:
@@ -232,6 +248,8 @@ class RecipeIngredientListView(APIView):
 
 
 class RecipeIngredientDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def delete(self, request, pk, ingredient_pk):
         link = RecipeIngredient.objects.filter(
             recipe_id=pk, ingredient_id=ingredient_pk
