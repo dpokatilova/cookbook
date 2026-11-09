@@ -29,10 +29,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Користувач з таким email вже існує.")
         return value
 
-    def validate(self, attrs):
-        if attrs["password"] != attrs["password2"]:
-            raise serializers.ValidationError({"password2": "Паролі не збігаються."})
-        return attrs
+    def validate_password2(self, value):
+        if value != self.initial_data.get("password"):
+            raise serializers.ValidationError("Паролі не збігаються.")
+        return value
 
     def create(self, validated_data):
         validated_data.pop("password2")
