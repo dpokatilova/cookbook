@@ -75,3 +75,12 @@ class RecipeIngredientCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeIngredient
         fields = ["ingredient_id", "amount"]
+
+
+class ErrorSerializer(serializers.Serializer):
+    error = serializers.CharField()
+    details = serializers.DictField()
+
+
+class DetailErrorSerializer(serializers.Serializer):
+    detail = serializers.CharField()
