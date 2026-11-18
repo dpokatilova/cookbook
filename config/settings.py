@@ -158,6 +158,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API для пошуку рецептів та планування меню.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    "REDOC_DIST": "https://cdn.jsdelivr.net/npm/redoc@2",
 }
 
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
