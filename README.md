@@ -1,115 +1,530 @@
-# web-programming-2026-template
+# CookBook
 
-A reusable Django project with no bundled application, SQLite, and Django's
-standard admin, authentication, sessions, messages, and staticfiles support.
+## Опис сайта
 
-## Local setup
+**CookBook** - це платформа для пошуку рецептів та планування меню на тиждень.
+Сайт буде мати каталог рецептів з можливістю пошуку за назвою страви. Також можна буде фільтрувати пошук за категоріями (наприклад, сніданок або італійська кухня). Також буде можливість сортувати за часом приготування і каклорійністю.
+Можна буде окремо переглядати всі страви з кожної категорії чи всі страви з конкретним продуктом.
 
-Requires the latest patch release of Python 3.12, 3.13, or 3.14. Run these commands from the project directory containing
-`manage.py`.
+**Меню** - зареєстровані користувачі зможуть додавати собі в меню рецепти і після збереження меню рецепти будуть формуватись у план харчування, який буде відображатись в історії профілю.
 
-1. Create and activate a virtual environment:
+Фронтенд: https://github.com/dpokatilova/cookbook-frontend
 
-   ```bash
+## Як запустити проєкт
+
+Усі команди виконуються з папки, де лежить `manage.py`.
+ 
+1. Склонуйте репозиторій
+ 
+2. Створіть і активуйте віртуальне середовище:
+```bash
    python -m venv .venv
-   
-   # for linux/macos
-   source .venv/bin/activate
-   # for Windows:
+ 
+   # Windows:
    .venv\Scripts\activate
-   ```
-
-2. Install dependencies:
-
-   ```bash
+   # Linux / macOS:
+   source .venv/bin/activate
+```
+ 
+3. Встановіть залежності:
+```bash
    python -m pip install -r requirements-dev.txt
-   ```
+```
+ `requirements.txt` — залежності для запуску сайту (Django, DRF, simplejwt, drf-spectacular, python-dotenv),
+   `requirements-dev.txt` — усе з `requirements.txt` плюс інструменти для тестів і перевірки стилю (pytest, pytest-django, coverage, ruff).
 
+4. Створіть файл `.env` за зразком `.env.example` (див. розділ «Змінні середовища»).
 
-3. Apply migrations to create the local SQLite database:
-
-   ```bash
+5. Застосуйте міграції:
+```bash
    python manage.py migrate
-   ```
+```
+ 
+6. Створіть адміністратора (потрібен для створення категорій та інгредієнтів):
 
-4. Start the development server:
+```bash
+   python manage.py createsuperuser
+```
 
-   ```bash
+7. Запустіть сервер:
+```bash
    python manage.py runserver
-   ```
-
-## Endpoints
-
-With the server running at `http://127.0.0.1:8000`:
-
-| URL | Behavior |
+```
+ 
+### Адреси та порти
+ 
+| Частина | Адреса |
 | --- | --- |
-| http://127.0.0.1:8000/ | No application homepage; may show Django's development welcome page while `DEBUG = True` |
-| http://127.0.0.1:8000/admin/ | Django admin, available after applying migrations |
+| Бекенд (API) | http://127.0.0.1:8000 |
+| Фронтенд | http://127.0.0.1:3000 |
 
-With `DEBUG = False`, unmatched URLs such as `/` return HTTP 404.
+## Змінні середовища
 
-To create an account for admin login, run this after applying migrations:
+Конфіденційні дані й налаштування середовища зберігаються у файлі `.env`, який не комітиться в репозиторій.
+Значення завантажуються в `config/settings.py` бібліотекою `python-dotenv`.
 
-```bash
-python manage.py createsuperuser
-```
+Скопіюйте `.env.example` у `.env` і заповніть значення:
 
-## Add your first application
+| Змінна | Опис | Приклад |
+| --- | --- | --- |
+| `SECRET_KEY` | секретний ключ Django, також підписує JWT-токени | згенерувати командою нижче |
+| `DEBUG` | режим налагодження (`True` / `False`) | `True` |
+| `CORS_ALLOWED_ORIGINS` | адреси фронтенду через кому | `http://localhost:3000,http://127.0.0.1:3000` |
+| `LOG_LEVEL` | рівень логування (`DEBUG`, `INFO`, `WARNING`, `ERROR`) | `INFO` |
 
-1. Create an app from the directory containing `manage.py` (replace `myapp`
-   with your application name):
+## Тести
 
-   ```bash
-   python manage.py startapp myapp
-   ```
+Тести написані на `pytest` + `pytest-django` і лежать у `recipes/tests/`.
+Покрито ресурс **категорії** (`/categories/`): усі методи (GET, POST, PUT, DELETE), позитивні й негативні сценарії —
+доступ гостя (401), звичайного користувача (403) та адміністратора, невалідні дані (400), неіснуючий об'єкт (404),
+видалення категорії з рецептами (409), невалідний токен (401).
+Тестові дані (клієнти з авторизацією, користувачі, категорія, рецепт) готуються фікстурами в `recipes/tests/conftest.py`.
+Тести працюють на окремій тестовій базі, яку `pytest-django` створює автоматично.
 
-2. Add its generated configuration class, `myapp.apps.MyappConfig`, to
-   `INSTALLED_APPS` in `config/settings.py`.
-3. Define your views and create `myapp/urls.py` with their URL patterns.
-4. Register that URLconf in `config/urls.py` using `path()` and `include()`,
-   choosing a URL prefix for the app and retaining the admin route.
-
-See the official Django 6.1 tutorial for
-[views and URL registration](https://docs.djangoproject.com/en/6.1/intro/tutorial01/)
-and [app registration and models](https://docs.djangoproject.com/en/6.1/intro/tutorial02/).
-
-## Git attributes
-
-Git detects text files automatically and normalizes them to LF. Checkouts use
-LF on Linux and Windows, while `.bat` and `.cmd` files use CRLF. Binary files
-are auto-detected and left unchanged, helping avoid newline-only diffs.
-
-
-## Code style and submission verification
-
-All submissions are required to adhere to PEP-8, Django best practices, and standard HTML/CSS/JS formatting. A deterministic cross-platform utility is provided to help you check and format your code.
-
-### 1. Verification (Check Mode)
-Before submitting, verify that all files adhere to the required standards:
+Запуск тестів:
 
 ```bash
-python check_submission.py
+pytest
 ```
 
-If all checks pass, you are ready to submit! If any checks fail, review the error output or run the auto-formatter below.
-
-### 2. Auto-Formatting
-To automatically format Python files, fix safe PEP-8 rules, format Django HTML templates, and format CSS/JS static files:
+### Покриття тестами
 
 ```bash
-python check_submission.py --format
+coverage run -m pytest
+coverage report -m
 ```
 
-### 3. PyCharm Integration
-If you use PyCharm:
-- **One-Click Run:** In the top-right toolbar run configurations dropdown, select **"Verify Submission"** or **"Format Project"** and click the green **Play** button.
+## Документація API (OpenAPI)
 
-## Development only
+Документація генерується автоматично з коду за допомогою `drf-spectacular`.
+Найдетальніше описано ресурс **категорії**: параметри, тіла запитів і відповідей, статуси, вимоги до авторизації, приклади.
 
-The included settings use `DEBUG = True`, a development secret key, and a local
-SQLite database. The default mailer uses the console backend: email is printed
-to the process's console instead of being delivered.
+Після запуску сервера:
 
-This configuration and Django's development server are not suitable for
-production deployment.
+| Що | Адреса |
+| --- | --- |
+| Swagger UI | http://127.0.0.1:8000/api/docs/ |
+| ReDoc | http://127.0.0.1:8000/api/redoc/ |
+| OpenAPI-схема (YAML) | http://127.0.0.1:8000/api/schema/ |
+
+Зберегти схему у файл:
+
+```bash
+python manage.py spectacular --file schema.yml
+```
+
+## Логування
+
+Логи виводяться в консоль (термінал, де запущено `runserver`) у форматі `час рівень модуль: повідомлення`.
+Рівень задається змінною `LOG_LEVEL` у `.env`.
+
+| Рівень | Що логується |
+| --- | --- |
+| `DEBUG` | параметри запиту списку рецептів |
+| `INFO` | створення, оновлення та видалення категорій, інгредієнтів, рецептів і складу рецепта; реєстрація користувача |
+| `WARNING` | відхилені запити: невалідні дані (лише назви полів), неіснуючі об'єкти, порушення бізнес-правил (409) |
+| `ERROR` | необроблені помилки сервера (логер Django `django.request`) |
+
+Паролі, токени, email та тіла запитів у логи не потрапляють.
+
+## Опис ендпоінтів
+### Рецепти
+   **`GET /recipes/`**
+   *   **Опис:** отримання всіх рецептів
+   *   **Параметри (всі необов'язкові, можна комбінувати):**
+       *   `?search=Омлет` — пошук за назвою
+       *   `?category=1` — рецепти з категорії
+       *   `?ingredient=5` — рецепти з інгредієнтом
+       *   `?max_time=30` — час приготування не більше ніж 30 хв
+       *   `?ordering=time_minutes` — сортування; можливі значення: `time_minutes`, `-time_minutes`, `calories`, `-calories` (мінус — за спаданням)
+   *   **Статус:** 200 OK
+   *   **Доступ:** усі
+   *   **Помилки:** 400 — якщо `category`, `ingredient` або `max_time` не число, або невідоме значення `ordering`
+   *   **Response body:**
+```json
+        [
+          {
+            "id": 1,
+            "title": "Борщ",
+            "time_minutes": 90,
+            "calories": 400,
+            "category_id": 1
+          }
+        ]
+```
+
+   **`GET /recipes/{id}/`**
+   *   **Опис:** перегляд рецепта разом з інгредієнтами
+   *   **Статус:** 200 OK
+   *   **Доступ:** усі
+   *   **Помилки:** 404 — рецепта не існує
+   *   **Response body:** 
+        ```json
+            {
+             "id": 2,
+              "title": "Паста Карбонара",
+              "description": "Класична італійська паста з гуанчіале та яйцем.",
+              "time_minutes": 25,
+              "calories": 400,
+              "category_id": 2,
+              "ingredients": [
+                {"id": 12, "name": "Спагетті", "amount": "200г"},
+                {"id": 15, "name": "Гуанчіале", "amount": "100г"}
+               ]
+               }
+        ```
+
+   **`POST /recipes/`**
+   *   **Опис:** створення нового рецепта (інгредієнти додаються окремим запитом, див. нижче)
+   *   **Статус:** 201 Created
+   *   **Доступ:** авторизовані (`Authorization: Bearer <access_token>`)
+   *   **Помилки:** 400 — невалідні дані, 401 — без токена
+   *   **Request body:**
+```json
+        {
+          "title": "Млинці з сиром",
+          "description": "Тонкі млинці з солодкою сирною начинкою.",
+          "time_minutes": 40,
+          "calories": 250,
+          "category_id": 4
+        }
+```
+   *   **Response body:**
+```json
+        {
+          "id": 105,
+          "title": "Млинці з сиром",
+          "description": "Тонкі млинці з солодкою сирною начинкою.",
+          "time_minutes": 40,
+          "calories": 250,
+          "category_id": 4
+        }
+```
+
+   **`PUT /recipes/{id}/`**
+   *   **Опис:** оновлення рецепта
+   *   **Статус:** 200 OK
+   *   **Доступ:** авторизовані (`Authorization: Bearer <access_token>`)
+   *   **Помилки:** 400 — невалідні дані, 401 — без токена, 404 — рецепта не існує
+   *   **Request body:** 
+       ```json
+         {
+          "title": "Млинці з сиром",
+           "description": "Тонкі млинці з солодкою сирною начинкою та родзинками.",
+           "time_minutes": 45,
+           "calories": 280,
+           "category_id": 4
+         }
+         ```
+   *   **Response body:**
+         ```json
+         {
+          "id": 105,
+           "title": "Млинці з сиром та родзинками",
+           "description": "Тонкі млинці з солодкою сирною начинкою та родзинками.",
+           "time_minutes": 45,
+           "calories": 280,
+           "category_id": 4
+          }
+          ```
+
+   **`DELETE /recipes/{id}/`**
+   *   **Опис:** Видалення рецепта
+   *   **Статус:** 204 No Content
+   *   **Доступ:** авторизовані (`Authorization: Bearer <access_token>`)
+   *   **Помилки:** 400 — невалідні дані, 401 — без токена, 404 — рецепта не існує
+
+
+### Інгредієнти рецепта
+ 
+   **`POST /recipes/{id}/ingredients/`**
+   *   **Опис:** додавання інгредієнта до рецепта
+   *   **Статус:** 201 Created
+   *   **Доступ:** авторизовані (`Authorization: Bearer <access_token>`)
+   *   **Помилки:** 400 — невалідні дані, 401 — без токена, 404 — рецепта не існує, 409 — інгредієнт уже є в цьому рецепті
+   *   **Request body:**
+```json
+        {
+          "ingredient_id": 12,
+          "amount": "200 г"
+        }
+```
+   *   **Response body:** рецепт з оновленим списком інгредієнтів (як у `GET /recipes/{id}/`)
+   
+   **`DELETE /recipes/{id}/ingredients/{ingredient_id}/`**
+   *   **Опис:** прибрати інгредієнт з рецепта (сам інгредієнт і рецепт не видаляються)
+   *   **Статус:** 204 No Content
+   *   **Доступ:** авторизовані (`Authorization: Bearer <access_token>`)
+   *   **Помилки:** 400 — невалідні дані, 401 — без токена, 404 — цього інгредієнта немає в рецепті
+
+### Категорії
+*   Ендпоінти для інгредієнтів (`/ingredients/`) мають таку ж структуру
+ 
+   **`GET /categories/`**
+   *   **Опис:** список категорій
+   *   **Параметри:** `?search=Сні` — пошук за назвою
+   *   **Статус:** 200 OK
+   *   **Доступ:** усі
+   *   **Response body:**
+```json
+        [
+          { "id": 1, "name": "Українська кухня" },
+          { "id": 2, "name": "Італійська кухня" },
+          { "id": 3, "name": "Десерти" }
+        ]
+```
+ 
+   **`GET /categories/{id}/`**
+   *   **Опис:** перегляд категорії. Рецепти категорії отримуються через `GET /recipes/?category={id}`
+   *   **Статус:** 200 OK
+   *   **Доступ:** усі
+   *   **Помилки:** 404 — категорії не існує
+   *   **Response body:**
+```json
+        { "id": 2, "name": "Італійська кухня" }
+```
+ 
+   **`POST /categories/`**
+   *   **Опис:** створення категорії
+   *   **Статус:** 201 Created
+   *   **Доступ:** лише адміністратори
+   *   **Помилки:** 400 — невалідні дані, 401 — без токена, 403 — не адміністратор, 400 — порожня назва або категорія з такою назвою вже існує
+   *   **Request body:**
+```json
+        { "name": "Десерти" }
+```
+   *   **Response body:**
+```json
+        { "id": 3, "name": "Десерти" }
+```
+ 
+   **`PUT /categories/{id}/`**
+   *   **Опис:** оновлення категорії
+   *   **Статус:** 200 OK
+   * **Доступ:** лише адміністратори
+   *   **Помилки:** 400 — невалідні дані, 401 — без токена, 403 — не адміністратор, 404 — категорії не існує
+   *   **Request body:**
+```json
+        { "name": "Десерти та випічка" }
+```
+   *   **Response body:**
+```json
+        { "id": 3, "name": "Десерти та випічка" }
+```
+ 
+   **`DELETE /categories/{id}/`**
+   *   **Опис:** видалення категорії
+   *   **Статус:** 204 No Content
+   *   **Доступ:** лише адміністратори
+   *   **Помилки:** 400 — невалідні дані, 401 — без токена 404 — категорії не існує, 409 — у категорії є рецепти
+
+
+### Кошик
+
+   **`GET /cart/`**
+   *   **Опис:** перегляд вибраних страв
+   *   **Статус:** 200 OK
+   *   **Response body:** 
+        ```json
+         {
+          "id": 10,
+          "recipe_id": 2,
+          "recipe_title": "Паста Карбонара",
+          "quantity": 2
+        }
+         ```
+
+   **`POST /cart/`**
+   *   **Опис:** додавання рецепта в кошик
+   *   **Статус:** 201 Created
+   *   **Request body:** 
+        ```json
+         {
+          "recipe_id": 8,
+           "quantity": 1
+        }
+         ```
+   *   **Response body:** 
+        ```json
+         {
+          "id": 11,
+           "recipe_id": 8,
+           "quantity": 1
+        }
+         ```
+
+   **`DELETE /cart/{id}/`**
+   *   **Опис:** видалення з кошика
+   *   **Статус:** 204 No Content
+
+### Замовлення
+   **`POST /ordres/`**
+   *    **Опис:** зберігання поточного кошика
+   *    **Статус:** 201 Created
+   *    **Response body:**
+        ```json
+         {
+          "order_id": 1024,
+           "status": "created",
+           "total_items": 3,
+           "created_at": "2026-10-13T15:30:00Z"
+        }
+         ```
+
+   **`GET /ordres/`**
+   *    **Опис:** перегляд плану харчування
+   *    **Статус:** 200 OK
+   *    **Response body:**
+        ```json
+         {
+           "order_id": 1024,
+           "total_items": 3,
+           "created_at": "2026-10-13T15:30:00Z",
+           "items": [
+               {"recipe_title": "Паста Карбонара", "quantity": 2},
+               {"recipe_title": "Піца Маргарита", "quantity": 1}
+              ]
+           }
+         ```
+
+## Авторизація та права доступу
+
+Авторизація реалізована через **JWT** (бібліотека `djangorestframework-simplejwt`) в окремому app `users`.
+Користувачі зберігаються у вбудованій моделі Django `User`, паролі — лише в захешованому вигляді.
+
+### Як передавати токен
+
+Для захищених запитів додайте заголовок:
+
+```
+Authorization: Bearer <access_token>
+```
+
+| Токен | Термін дії | Для чого |
+| --- | --- | --- |
+| `access` | 5 хвилин | передається в кожному захищеному запиті |
+| `refresh` | 1 день | для отримання нового `access` через `POST /users/token/refresh/` |
+
+Коли `access` закінчується, сервер повертає `401`. Клієнт має отримати новий `access` за допомогою `refresh` і повторити запит.
+Logout виконується на клієнті: збережені токени просто видаляються.
+
+### Права доступу
+
+| Ресурс | GET | POST / PUT / DELETE |
+| --- | --- | --- |
+| Рецепти, інгредієнти рецепта | усі | авторизовані |
+| Категорії, інгредієнти | усі | лише адміністратори (`is_staff`) |
+| `GET /users/me/` | авторизовані | — |
+| Реєстрація, логін, refresh | усі | усі |
+
+| Статус | Коли |
+| --- | --- |
+| `401 Unauthorized` | токена немає, він недійсний або закінчився |
+| `403 Forbidden` | користувач авторизований, але не має прав (наприклад, звичайний користувач створює категорію) |
+
+Приклад `401`:
+```json
+{ "detail": "Authentication credentials were not provided." }
+```
+
+Приклад `403`:
+```json
+{ "detail": "Змінювати категорії та інгредієнти можуть лише адміністратори." }
+```
+
+Помилки 401 і 403 повертаються у стандартному форматі DRF (`detail`), інші помилки API — у форматі `{"error", "details"}`.
+
+### Ендпоінти
+
+   **`POST /users/register/`**
+   *   **Опис:** реєстрація нового користувача
+   *   **Доступ:** усі
+   *   **Статус:** 201 Created
+   *   **Валідація:**
+       *   обов'язкові: `username`, `email`, `password`, `password2`; `first_name` і `last_name` — необов'язкові;
+       *   максимальна довжина: `username`, `first_name`, `last_name` — 150, `email` — 254, `password` — 128;
+       *   `username` і `email` — унікальні; `email` — коректний формат;
+       *   `password` — щонайменше 8 символів, не надто поширений, не лише з цифр, не схожий на username;
+       *   `password` і `password2` мають збігатися.
+   *   **Помилки:** 400 — з повідомленням для кожного поля в `details`
+   *   **Request body:**
+        ```json
+        {
+          "username": "user1",
+          "first_name": "",
+          "last_name": "",
+          "email": "cook@example.com",
+          "password": "Cookbook2026!",
+          "password2": "Cookbook2026!"
+        }
+        ```
+   *   **Response body:**
+        ```json
+        {
+          "id": 3,
+          "username": "user1",
+          "first_name": "",
+          "last_name": "",
+          "email": "cook@example.com"
+        }
+        ```
+   *   **Приклад помилки (400):**
+        ```json
+        {
+          "error": "Невалідні дані. Деталі по кожному полю — у details.",
+          "details": {
+            "username": ["A user with that username already exists."],
+            "password": ["This password is too common."],
+            "password2": ["Паролі не збігаються."]
+          }
+        }
+        ```
+
+   **`POST /users/login/`**
+   *   **Опис:** логін, отримання пари токенів
+   *   **Доступ:** усі
+   *   **Статус:** 200 OK
+   *   **Помилки:** 401 — неправильний username або пароль
+   *   **Request body:**
+        ```json
+        { "username": "user1", "password": "Cookbook2026!" }
+        ```
+   *   **Response body:**
+        ```json
+        { "refresh": "eyJhbGciOi...", "access": "eyJhbGciOi..." }
+        ```
+
+   **`POST /users/token/refresh/`**
+   *   **Опис:** отримання нового `access` токена
+   *   **Доступ:** усі (потрібен дійсний `refresh`)
+   *   **Статус:** 200 OK
+   *   **Помилки:** 401 — `refresh` недійсний або закінчився
+   *   **Request body:**
+        ```json
+        { "refresh": "eyJhbGciOi..." }
+        ```
+   *   **Response body:**
+        ```json
+        { "access": "eyJhbGciOi..." }
+        ```
+
+   **`GET /users/me/`**
+   *   **Опис:** дані поточного користувача
+   *   **Доступ:** авторизовані
+   *   **Хедери:** `Authorization: Bearer <access_token>`
+   *   **Статус:** 200 OK
+   *   **Помилки:** 401 — без токена або з недійсним токеном
+   *   **Response body:**
+        ```json
+        {
+          "id": 3,
+          "username": "user1",
+          "first_name": "",
+          "last_name": "",
+          "email": "cook@example.com",
+          "is_staff": false
+        }
+        ```
+
+## База даних
+<img width="955" height="461" alt="Screenshot 2026-10-12 201530" src="https://github.com/user-attachments/assets/c118c064-abf4-4dcf-871e-36a9bb02e524" />
